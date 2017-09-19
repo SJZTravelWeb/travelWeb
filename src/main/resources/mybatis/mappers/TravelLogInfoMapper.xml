@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memory.mapper.UserMapper">
+
+    <!--删除用户信息  -->
+    <delete id="deletedeletetravellogInfo">
+        delete from img_log_p where img_id in (
+        <!--由于传递的参数就是数组  -->
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

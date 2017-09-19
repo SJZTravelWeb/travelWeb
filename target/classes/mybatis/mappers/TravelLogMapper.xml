@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.memory.mapper.TravelLogMapper">
+
+
+    <!--查询用户表，内部实现了3张表关联查询   （目前只有单表查询） -->
+    <select id="findAll" resultMap="travelRM">
+        <!--sql语句全部小写   末尾不要加；号 -->
+        select * from travallog_p order by state
+    </select>
+
+
+    <resultMap type="TravelLog" id="travelRM" autoMapping="true">
+    <!--完成主表映射  -->
+    <id column="trvallog_id" property="trvallogId"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <!--删除用户信息  -->
+    <delete id="deletetravellog">
+        delete from travallog_p where trvallog_id in (
+        <!--由于传递的参数就是数组  -->
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+
+
+    <!--修改用户状态  -->
+     <update id="updateState">
+         update travallog_p set state = #{state} where trvallog_id in (
+
+         <!--collection="trvallogIds" 写的是map中的key  -->
+         <foreach collection="trvallogIds" item="id" separator=",">
+             #{id}
+         </foreach>
+         )
+     </update>
+    
+
+
+</mapper>
